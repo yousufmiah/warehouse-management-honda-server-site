@@ -1,0 +1,25 @@
+
+https://github.com/ProgrammingHeroWC4/warehouse-management-server-side-yousufmiah
+
+
+
+echo "# warehouse-management-server-side-yousufmiah" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ProgrammingHeroWC4/warehouse-management-server-side-yousufmiah.git
+git push -u origin main
+
+
+
+
+
+
+
+
+
+
+
+
+
