@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 const port = process.env.POR || 5000;
 const app = express();
@@ -8,9 +9,49 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//connection
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
+
+async function run() {
+  try {
+    await client.connect();
+    const hondaCollection = client.db("honda").collection("items");
+
+    // get from database
+    app.get("/items", async (req, res) => {
+      const query = {};
+      const cursor = hondaCollection.find(query);
+      const items = await cursor.toArray();
+      res.send(items);
+    });
+
+    //POST to database
+    app.post("/items", async (req, res) => {
+      const newItem = req.body;
+      const result = await hondaCollection.insertOne(newItem);
+      res.send(result);
+    });
+
+    //Delete from database
+    app.delete("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await hondaCollection.deleteOne(query);
+      res.send(result);
+    });
+  } finally {
+  }
+}
+run().catch(console.dir);
+
 //root api
 app.get("/", (req, res) => {
-  res.send("Running Dry Fish server.");
+  res.send("Running Honda App Server.");
 });
 
 app.listen(port, () => {
