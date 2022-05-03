@@ -9,13 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// DB_USER=dbhonda
-// DB_PASS=jNQopFsuAnFhZQX4
-
 //connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-// const uri =
-//   "mongodb+srv://dbhonda:jNQopFsuAnFhZQX4@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
