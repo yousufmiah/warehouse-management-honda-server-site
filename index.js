@@ -2,21 +2,27 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
-const port = process.env.POR || 5000;
+const port = process.env.POR || 5001;
 const app = express();
 
 //middleware
 app.use(cors());
 app.use(express.json());
 
+// DB_USER=dbhonda
+// DB_PASS=jNQopFsuAnFhZQX4
+
 //connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+// const uri =
+//   "mongodb+srv://dbhonda:jNQopFsuAnFhZQX4@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
 
+// ==========================
 async function run() {
   try {
     await client.connect();
@@ -52,6 +58,11 @@ run().catch(console.dir);
 //root api
 app.get("/", (req, res) => {
   res.send("Running Honda App Server.");
+});
+
+//hero
+app.get("/hero", (req, res) => {
+  res.send("Meet with heroku");
 });
 
 app.listen(port, () => {
