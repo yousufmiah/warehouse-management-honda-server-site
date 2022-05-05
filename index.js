@@ -12,7 +12,7 @@ app.use(express.json());
 //connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yyoht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-console.log(uri);
+// console.log(uri);
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -38,11 +38,13 @@ async function run() {
     app.post("/items", async (req, res) => {
       const newItem = req.body;
       const result = await hondaCollection.insertOne(newItem);
-      res.send(result);
+      // res.send(result);
+      res.send("hello");
     });
 
-    //Delete from database
+    // delete from database
     app.delete("/item/:id", async (req, res) => {
+      console.log(req.params);
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await hondaCollection.deleteOne(query);
