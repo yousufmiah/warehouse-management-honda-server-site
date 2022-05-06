@@ -44,7 +44,7 @@ async function run() {
 
     // delete from database
     app.delete("/item/:id", async (req, res) => {
-      console.log(req.params);
+      // console.log(req.params);
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await hondaCollection.deleteOne(query);
