@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+
 require("dotenv").config();
 const port = process.env.PORT || 5001;
 const app = express();
@@ -28,10 +29,28 @@ async function run() {
 
     // get from database
     app.get("/items", async (req, res) => {
+      // console.log(req.query);
+
+      const limit = Number(req.query.limit);
+      console.log(limit);
+      const pageNumber = Number(req.query.pageNumber);
       const query = {};
       const cursor = hondaCollection.find(query);
-      const items = await cursor.toArray();
+      const items = await cursor
+        .skip(limit * pageNumber)
+        .limit(limit)
+        .toArray();
+
+      // const count = await hondaCollection.estimatedDocumentCount();
       res.send(items);
+    });
+
+    // get from database by id
+    app.get("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const item = await hondaCollection.findOne(query);
+      res.send(item);
     });
 
     //POST to database
@@ -42,9 +61,46 @@ async function run() {
       res.send("hello");
     });
 
-    // delete from database
-    app.delete("/item/:id", async (req, res) => {
+    //Put to deliver database
+    app.put("/item/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedItem = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          quantity: updatedItem.quantity,
+        },
+      };
+      const result = await hondaCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    //update item
+    app.put("/updateitem/:id", async (req, res) => {
       // console.log(req.params);
+      const id = req.params.id;
+      const updatedItem = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: updatedItem,
+      };
+      const result = await hondaCollection.updateOne(
+        filter,
+        options,
+        updatedDoc
+      );
+      res.send(result);
+    });
+
+    // delete from database
+    app.delete("/items/:id", async (req, res) => {
+      console.log(req.params);
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await hondaCollection.deleteOne(query);
