@@ -1,8 +1,6 @@
-# warehouse-management-server-side-yousufmiah
-warehouse-management-server-side-yousufmiah created by GitHub Classroom
 
 
-# Getting Started with Honda Store
+## Getting Started with Honda Store
 
 ### Live link
 This project is [Honda Store]( https://honda-app-91b97.web.app).
