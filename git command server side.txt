@@ -1,8 +1,6 @@
 
 https://github.com/ProgrammingHeroWC4/warehouse-management-server-side-yousufmiah
 
-
-
 echo "# warehouse-management-server-side-yousufmiah" >> README.md
 git init
 git add README.md
