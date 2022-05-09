@@ -3,7 +3,7 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 require("dotenv").config();
-const port = process.env.PORT || 4200;
+const port = process.env.PORT || 5001;
 const app = express();
 
 //middleware
@@ -27,12 +27,12 @@ async function run() {
     await client.connect();
     const hondaCollection = client.db("honda").collection("items");
 
-    // get from database
+    // get from database========================
     app.get("/items", async (req, res) => {
       // console.log(req.query);
 
       const limit = Number(req.query.limit);
-      console.log(limit);
+      // console.log(limit);
       const pageNumber = Number(req.query.pageNumber);
       const query = {};
       const cursor = hondaCollection.find(query);
@@ -42,6 +42,7 @@ async function run() {
         .toArray();
 
       // const count = await hondaCollection.estimatedDocumentCount();
+
       res.send(items);
     });
 
@@ -81,10 +82,11 @@ async function run() {
     });
 
     //update item
-    app.put("/updateitem/:id", async (req, res) => {
+    app.put("/updateItem/:id", async (req, res) => {
       // console.log(req.params);
       const id = req.params.id;
       const updatedItem = req.body;
+      // console.log(updateItem);
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updatedDoc = {
@@ -100,7 +102,7 @@ async function run() {
 
     // delete from database
     app.delete("/items/:id", async (req, res) => {
-      console.log(req.params);
+      // console.log(req.params);
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await hondaCollection.deleteOne(query);
